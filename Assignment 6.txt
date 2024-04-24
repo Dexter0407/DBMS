@@ -1,0 +1,61 @@
+CREATE TABLE Emp_company (
+    ename VARCHAR(255),
+    cname VARCHAR(255),
+    salary DECIMAL(10, 2),
+    joiningdate DATE,
+    city VARCHAR(255)
+);
+
+
+INSERT INTO Emp_company (ename, cname, salary, joiningdate, city)
+VALUES
+    ('John', 'TATA', 60000.00, '1999-12-15', 'Mumbai'),
+    ('Jane', 'ACC', 55000.00, '2000-02-20', 'Delhi'),
+    ('Mike', 'TATA', 65000.00, '2001-05-10', 'Pune'),
+    ('Emily', 'ACC', 50000.00, '1998-08-25', 'Mumbai'),
+    ('Chris', 'XYZ', 70000.00, '2002-01-30', 'Bangalore'),
+    ('Sarah', 'ACC', 48000.00, '2000-01-05', 'Mumbai');
+
+
+
+SELECT MAX(salary) AS max_salary
+FROM Emp_company;
+
+
+SELECT MAX(salary) AS max_salary_in_TATA
+FROM Emp_company
+WHERE cname = 'TATA';
+
+
+SELECT COUNT(*) AS num_employees_in_ACC
+FROM Emp_company
+WHERE cname = 'ACC';
+
+
+
+SELECT cname, MAX(salary) AS max_salary
+FROM Emp_company
+GROUP BY cname;
+
+
+
+SELECT cname, AVG(salary) AS avg_salary
+FROM Emp_company
+GROUP BY cname;
+
+
+
+UPDATE Emp_company
+SET salary = salary * 1.15
+WHERE city = 'Mumbai';
+
+
+
+DELETE FROM Emp_company
+WHERE salary < 5000;
+
+
+
+SELECT ename
+FROM Emp_company
+WHERE MONTH(joiningdate) = 1 AND YEAR(joiningdate) = 2000;

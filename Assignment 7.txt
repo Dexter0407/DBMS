@@ -1,0 +1,103 @@
+CREATE TABLE Branch (
+    bname VARCHAR(255) PRIMARY KEY,
+    city VARCHAR(255)
+);
+
+CREATE TABLE Customer (
+    cname VARCHAR(255) PRIMARY KEY,
+    city VARCHAR(255)
+);
+
+CREATE TABLE Borrow (
+    loanno INT PRIMARY KEY,
+    cname VARCHAR(255),
+    bname VARCHAR(255),
+    amount DECIMAL(10, 2),
+    FOREIGN KEY (cname) REFERENCES Customer(cname),
+    FOREIGN KEY (bname) REFERENCES Branch(bname)
+);
+
+INSERT INTO Branch (bname, city)
+VALUES
+    ('Branch1', 'New York'),
+    ('Branch2', 'Los Angeles'),
+    ('Branch3', 'Chicago');
+
+INSERT INTO Customer (cname, city)
+VALUES
+    ('Alice', 'New York'),
+    ('Bob', 'Los Angeles'),
+    ('Charlie', 'Chicago'),
+    ('David', 'New York');
+
+
+
+INSERT INTO Borrow (loanno, cname, bname, amount)
+VALUES
+    (101, 'Alice', 'Branch1', 5000.00),
+    (102, 'Bob', 'Branch2', 3000.00),
+    (103, 'Charlie', 'Branch3', 2000.00),
+    (104, 'David', 'Branch1', 1500.00);
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  CREATE TABLE Deposit (
+    accountno INT PRIMARY KEY,
+    cname VARCHAR(255),
+    amount DECIMAL(10, 2),
+    acctdate DATE,
+    bname VARCHAR(255),
+    FOREIGN KEY (bname) REFERENCES Branch(bname)
+);
+
+
+INSERT INTO Deposit (accountno, cname, amount, acctdate, bname)
+VALUES
+    (1, 'Alice', 1500.00, '2024-03-15', 'Branch1'),
+    (2, 'Bob', 800.00, '2024-04-01', 'Branch2'),
+    (3, 'Alice', 2000.00, '2024-05-10', 'Branch1'),
+    (4, 'Charlie', 3000.00, '2024-02-20', 'Branch3'),
+    (5, 'David', 1200.00, '2024-03-05', 'Branch1');
+
+
+
+SELECT *
+FROM Borrow;
+
+
+
+SELECT cname
+FROM Deposit
+WHERE amount > 1000 AND cname LIKE 'A%';
+
+
+
+SELECT cname, amount
+FROM Deposit
+ORDER BY amount DESC;
+
+
+
+SELECT SUM(amount) AS total_loan
+FROM Borrow;
+
+
+
+SELECT d.bname AS branch_name, SUM(d.amount) AS total_deposit
+FROM Deposit d
+GROUP BY d.bname;
+
+
+
+SELECT bname
+FROM Deposit
+GROUP BY bname
+HAVING SUM(amount) > 4000;

@@ -1,0 +1,100 @@
+-- Create Deposit table
+CREATE TABLE Deposit (
+    accountno INT PRIMARY KEY,
+    cname VARCHAR(50),
+    amount DECIMAL(10, 2),
+    acctdate DATE,
+    bname VARCHAR(50)
+);
+
+-- Create Branch table
+CREATE TABLE Branch (
+    bname VARCHAR(50) PRIMARY KEY,
+    city VARCHAR(50)
+);
+
+-- Create Customer table
+CREATE TABLE Customer (
+    cname VARCHAR(50) PRIMARY KEY,
+    city VARCHAR(50)
+);
+
+-- Create Borrow table
+CREATE TABLE Borrow (
+    loanno INT PRIMARY KEY,
+    cname VARCHAR(50),
+    bname VARCHAR(50),
+    amount DECIMAL(10, 2)
+);
+
+-- Insert sample data into tables
+
+-- Insert into Branch
+INSERT INTO Branch (bname, city)
+VALUES
+    ('Branch1', 'Mumbai'),
+    ('Branch2', 'Pune');
+
+-- Insert into Customer
+INSERT INTO Customer (cname, city)
+VALUES
+    ('Anil', 'Pune'),
+    ('Sunil', 'Mumbai'),
+    ('Alice', 'Mumbai'),
+    ('Bob', 'Pune');
+
+-- Insert into Deposit
+INSERT INTO Deposit (accountno, cname, amount, acctdate, bname)
+VALUES
+    (1, 'Anil', 1500.00, '2024-04-20', 'Branch1'),
+    (2, 'Sunil', 2000.00, '2024-04-21', 'Branch2'),
+    (3, 'Alice', 800.00, '2024-04-19', 'Branch1'),
+    (4, 'Bob', 1200.00, '2024-04-22', 'Branch2');
+
+-- Insert into Borrow
+INSERT INTO Borrow (loanno, cname, bname, amount)
+VALUES
+    (101, 'Alice', 'Branch1', 5000.00),
+    (102, 'Bob', 'Branch2', 3000.00);
+
+
+
+SELECT * FROM Borrow;
+
+
+
+SELECT DISTINCT d.cname
+FROM Deposit d
+WHERE d.amount > 1000 AND d.cname LIKE 'A%';
+
+
+
+SELECT b.bname
+FROM Branch b
+JOIN Deposit d ON b.bname = d.bname
+WHERE b.city = 'Mumbai'
+GROUP BY b.bname
+HAVING SUM(d.amount) > 1000;
+
+
+
+UPDATE Deposit d
+JOIN Customer c ON d.cname = c.cname
+SET d.amount = d.amount * 1.10
+WHERE c.city = 'Pune';
+
+
+
+
+UPDATE Deposit
+SET amount = amount - 500
+WHERE cname = 'Anil';
+
+UPDATE Deposit
+SET amount = amount + 500
+WHERE cname = 'Sunil';
+
+
+
+DELETE FROM Deposit
+WHERE amount < 500;

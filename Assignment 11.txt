@@ -1,0 +1,36 @@
+CREATE TABLE emp (
+    Emp_id INT PRIMARY KEY,
+    Ename VARCHAR(100),
+    City VARCHAR(50),
+    State VARCHAR(50),
+    Salary DECIMAL(10, 2),
+    Age INT,
+    Hire_date DATE
+);
+
+
+
+INSERT INTO emp (Emp_id, Ename, City, State, Salary, Age, Hire_date)
+VALUES
+    (1, 'John Doe', 'New York', 'NY', 25000.00, 35, '2010-05-15'),
+    (2, 'Sarah Johnson', 'Los Angeles', 'CA', 28000.00, 28, '2015-08-20'),
+    (3, 'Sam Smith', 'Chicago', 'IL', 30000.00, 42, '2008-11-10'),
+    (4, 'Alice Sanders', 'San Francisco', 'CA', 22000.00, 39, '2013-04-25');
+
+
+
+SELECT Ename
+FROM emp
+WHERE Ename LIKE 'Sa%';
+
+
+
+SELECT Ename, Salary
+FROM emp
+WHERE Age < 40;
+
+
+
+SELECT *
+FROM emp
+WHERE Salary BETWEEN 20000.00 AND 30000.00;

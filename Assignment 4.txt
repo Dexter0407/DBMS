@@ -1,0 +1,61 @@
+CREATE TABLE BOOK (
+    Book_ISBN INT PRIMARY KEY,
+    Title VARCHAR(255) NOT NULL,
+    Publisher_Name VARCHAR(255),
+    Price DECIMAL(10, 2) CHECK (Price > 0),
+    Book_Copy INT
+);
+
+
+CREATE TABLE BOOK_AUTHORS (
+    Book_ISBN INT,
+    Author_Name VARCHAR(255) PRIMARY KEY,
+    Author_City VARCHAR(255) DEFAULT 'Pune',
+    Phone VARCHAR(20) UNIQUE,
+    Author_Email VARCHAR(255) -- Added field for email
+);
+
+INSERT INTO BOOK (Book_ISBN, Title, Publisher_Name, Price, Book_Copy)
+VALUES
+    (1, 'Database Management Systems', 'Pearson', 45.99, 100),
+    (2, 'Data Structures and Algorithms', 'O''Reilly', 39.99, 75),
+    (3, 'Programming in Python', 'Wrox', 29.99, 120),
+    (4, 'Introduction to SQL', 'McGraw-Hill', 34.99, 90),
+    (5, 'Web Development Basics', 'Packt', 19.99, 150);
+    
+    
+INSERT INTO BOOK_AUTHORS (Book_ISBN, Author_Name, Phone, Author_Email)
+VALUES
+    (1, 'John Doe', '1234567890', 'johndoe@example.com'),
+    (2, 'Jane Smith', '9876543210', 'janesmith@example.com'),
+    (3, 'David Johnson', '5551234567', 'david@example.com'),
+    (4, 'Emily Brown', '4449998888', 'emily@example.com'),
+    (5, 'Michael Lee', '7778889999', 'michael@example.com');
+    
+    
+
+
+
+
+
+
+
+ALTER TABLE BOOK_AUTHORS
+ADD COLUMN Author_Email VARCHAR(255);
+
+
+
+
+
+
+
+
+
+CREATE VIEW DBMS_BOOKS AS
+SELECT *
+FROM BOOK
+WHERE Title = 'Database Management Systems';
+
+
+
+DROP VIEW IF EXISTS DBMS_BOOKS;
