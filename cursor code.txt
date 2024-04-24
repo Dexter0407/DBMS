@@ -1,0 +1,93 @@
+-- Create a new database if it doesn't exist
+CREATE DATABASE IF NOT EXISTS school;
+
+-- Connect to the school database
+USE school;
+
+-- Drop the table if it exists (to ensure clean execution for testing)
+DROP TABLE IF EXISTS students;
+
+-- Create a table to store student information
+CREATE TABLE students (
+    student_id INT PRIMARY KEY,
+    student_name VARCHAR(100),
+    marks_obtained INT,
+    total_marks INT
+);
+
+-- Insert sample data into the students table
+INSERT INTO students (student_id, student_name, marks_obtained, total_marks)
+VALUES
+    (1, 'John Doe', 85, 100),
+    (2, 'Jane Smith', 70, 100),
+    (3, 'Alice Johnson', 95, 100),
+    (4, 'Bob Brown', 60, 100),
+    (5, 'Emily Davis', 75, 100),
+    (6, 'Michael Wilson', 88, 100),
+    (7, 'Sarah Lee', 78, 100),
+    (8, 'David Garcia', 92, 100),
+    (9, 'Jennifer Martinez', 83, 100),
+    (10, 'Daniel Rodriguez', 65, 100),
+    (11, 'Olivia Hernandez', 90, 100),
+    (12, 'James Lopez', 72, 100),
+    (13, 'Emma Gonzalez', 87, 100),
+    (14, 'Alexander Perez', 80, 100);
+
+-- Implement cursor to calculate grades for a minimum of 10 students
+DELIMITER $$
+
+CREATE PROCEDURE CalculateGrades()
+BEGIN
+    DECLARE done INT DEFAULT FALSE;
+    DECLARE v_student_id INT;
+    DECLARE v_student_name VARCHAR(100);
+    DECLARE v_marks_obtained INT;
+    DECLARE v_total_marks INT;
+    DECLARE v_percentage FLOAT;
+    DECLARE v_grade VARCHAR(2);
+    
+    -- Cursor declaration
+    DECLARE student_cursor CURSOR FOR 
+        SELECT student_id, student_name, marks_obtained, total_marks
+        FROM students
+        LIMIT 10; -- Assuming there are at least 10 students in the table
+    
+    -- Error handling
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+    
+    OPEN student_cursor;
+
+    read_loop: LOOP
+        FETCH student_cursor INTO v_student_id, v_student_name, v_marks_obtained, v_total_marks;
+        IF done THEN
+            LEAVE read_loop;
+        END IF;
+        
+        -- Calculate percentage
+        SET v_percentage = (v_marks_obtained / v_total_marks) * 100;
+        
+        -- Determine grade
+        IF v_percentage >= 90 THEN
+            SET v_grade = 'A+';
+        ELSEIF v_percentage >= 80 THEN
+            SET v_grade = 'A';
+        ELSEIF v_percentage >= 70 THEN
+            SET v_grade = 'B';
+        ELSEIF v_percentage >= 60 THEN
+            SET v_grade = 'C';
+        ELSE
+            SET v_grade = 'D';
+        END IF;
+        
+        -- Display result
+        SELECT CONCAT('Student ID: ', v_student_id, ', Student Name: ', v_student_name, 
+                      ', Percentage: ', v_percentage, ', Grade: ', v_grade);
+    END LOOP;
+
+    CLOSE student_cursor;
+END$$
+
+DELIMITER ;
+
+-- Call the stored procedure to calculate grades
+CALL CalculateGrades();
