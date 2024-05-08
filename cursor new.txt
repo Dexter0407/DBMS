@@ -1,0 +1,49 @@
+mysql> INSERT INTO students(student_id,student_name,marks) VALUES
+    -> (1,'Shubham',92),
+    -> (2,'Saurabh',75),
+    -> (3,'Sarthak',85),
+    -> (4,'Vishnu',65),
+    -> (5,'Martand',69),
+    -> (6,'Raj',80),
+    -> (7,'Raghav',67),
+    -> (8,'Rajnandini',76),
+    -> (9,'Aayush',90),
+    -> (10,'Aditya',72);
+Query OK, 10 rows affected (0.01 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE calculate_grade()
+    -> BEGIN
+    -> DECLARE done INT DEFAULT 0;
+    -> DEClARE v_student_id,v_marks INT;
+    -> DECLARE v_student_name,v_grade VARCHAR(50);
+    -> DECLARE cur CURSOR FOR SELECT student_id,student_name,marks FROM students;
+    -> DECLARE CONTINUE HANDLER FOR NOT FOUND SET done=1;
+    ->
+    -> OPEN cur;
+    -> read_loop:LOOP
+    -> FETCH cur INTO v_student_id,v_student_name,v_marks;
+    -> IF done =1 THEN
+    -> LEAVE read_loop;
+    -> END IF;
+    ->
+    -> IF v_marks>=90 THEN
+    ->    SET v_grade='A';
+    -> ELSEIF v_marks>=80 THEN
+    ->   SET v_grade='B';
+    -> ELSEIF v_marks>=70 THEN
+    ->   SET v_grade='C';
+    -> ELSE
+    ->   SET v_grade='D';
+    -> END IF;
+    ->
+    -> SELECT CONCAT('Student: ',v_student_name,'Grade: ',v_grade) as Students_grades;
+    ->
+    -> END LOOP;
+    ->
+    -> CLOSE cur;
+    -> END//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> DELIMITER;
