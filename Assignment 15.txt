@@ -21,7 +21,9 @@ BEGIN
     ELSE
         SET out_class = 'Not Classified';
     END IF;
-END;
+END//
+
+DELIMITER ;
 
 -- PL/SQL block to use the proc_Grade procedure
 SET @name := 'John';
